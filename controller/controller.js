@@ -3,26 +3,71 @@
 myApp.controller('MainCtrl', ['$scope', function($scope) {
 	
 	// $scope.name = "Task";
-	var vm = this;
+	// var vm = this;
 
-	vm.counter = 0;
-	vm.tasks = {};
-	vm.taskName = '';
+	$scope.counter = 0;
+	$scope.tasks = {};
+	$scope.taskName = '';
 
-	vm.addTask = function(){
+	$scope.addTask = function(){
 		var newTask = {
-			id: 'task' + vm.counter,
-			name: vm.taskName
+			id: 'task' + $scope.counter,
+			name: $scope.taskName
 		};
 
-		vm.tasks[newTask.id] = newTask;
-		vm.taskName = '';
-		vm.counter++;
-	}
+		$scope.tasks[newTask.id] = newTask;
+		$scope.taskName = '';
+		$scope.counter++;
+	};
 
-	vm.removeTask = function(tsk){
-		delete vm.tasks[task.id]
-	}
+	$scope.removeTask = function(task){
+		delete $scope.tasks[task.id]
+	};
 }]);
 
+myApp.directive('dirTimer', function($interval){
 
+	return {
+		restrict: 'E',
+		templateUrl: 'views/partial.html',
+		link: function($scope, element){
+			// var vm = this;
+
+			$scope.taskObject.milliseconds = 0;
+
+			var updateTime = null;
+			$scope.startTiming = function(){
+				updateTime = $interval(function(){
+					$scope.taskObject.milliseconds = $scope.taskObject.milliseconds + 1000;
+
+				}, 1000);
+			}
+
+			$scope.pauseTiming = function() {
+                $scope.cancelInterval();
+            }
+
+            $scope.stopTiming = function() {
+                $scope.cancelInterval();
+                $scope.taskObject.totalTime = $scope.taskObject.milliseconds;
+                $scope.resetTimer();
+            }
+
+            $scope.cancelInterval = function() {
+                $interval.cancel(updateTime);
+            }
+
+            $scope.resetTimer = function() {
+                $scope.taskObject.milliseconds = 0;
+            }
+
+            element.on('$destroy', function() {
+                $scope.cancelInterval();
+            });
+		},
+
+		scope: {
+			taskObject: '=timerTask'
+		}
+	}
+});

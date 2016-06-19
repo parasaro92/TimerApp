@@ -44,26 +44,26 @@ myApp.directive('dirTimer', function($interval){
 			}
 
 			$scope.pauseTiming = function() {
-                $scope.cancelInterval();
-            }
+        $scope.cancelInterval();
+      }
 
-            $scope.stopTiming = function() {
-                $scope.cancelInterval();
-                $scope.taskObject.totalTime = $scope.taskObject.milliseconds;
-                $scope.resetTimer();
-            }
+      $scope.stopTiming = function() {
+        $scope.cancelInterval();
+        $scope.taskObject.totalTime = $scope.taskObject.milliseconds;
+        $scope.resetTimer();
+      }
 
-            $scope.cancelInterval = function() {
-                $interval.cancel(updateTime);
-            }
+      $scope.cancelInterval = function() {
+        $interval.cancel(updateTime);
+      }
 
-            $scope.resetTimer = function() {
-                $scope.taskObject.milliseconds = 0;
-            }
+      $scope.resetTimer = function() {
+        $scope.taskObject.milliseconds = 0;
+      }
 
-            element.on('$destroy', function() {
-                $scope.cancelInterval();
-            });
+      element.on('$destroy', function() {
+        $scope.cancelInterval();
+      });
 		},
 
 		scope: {
